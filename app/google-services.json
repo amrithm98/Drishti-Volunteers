@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "37494669483",
+    "firebase_url": "https://drishti-bd782.firebaseio.com",
+    "project_id": "drishti-bd782",
+    "storage_bucket": "drishti-bd782.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37494669483:android:b5a9b3d592a0128d",
+        "android_client_info": {
+          "package_name": "com.drishti.drishti17"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37494669483-4in2smf4qltc66ofmcqtit1gnjp2fu0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drishti.drishti17",
+            "certificate_hash": "89c7f1560ee4d9f6995891facd1e1e72861c6d7d"
+          }
+        },
+        {
+          "client_id": "37494669483-mr1g4j85cr54i444ar6dau7gkrn8d9sg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drishti.drishti17",
+            "certificate_hash": "0485b0c0666715c4359923c572bb5146afbc948c"
+          }
+        },
+        {
+          "client_id": "37494669483-f7a0icg32t66pii1gonnig20p5qgjcl2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drishti.drishti17",
+            "certificate_hash": "310fc54cb71efdb16e75aeef6dbc0538dfa5e405"
+          }
+        },
+        {
+          "client_id": "37494669483-s5rv2h0djdkihefcpi6e3o5j2p5piajm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFRWtQtcFbDZfF-I5DZEEx7RD93Dq7Ij4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37494669483-s5rv2h0djdkihefcpi6e3o5j2p5piajm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37494669483:android:102ae883f99872bd",
+        "android_client_info": {
+          "package_name": "com.cse.amrith.drishti17volunteers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37494669483-hn2g5cs5mqpr33ish10imddsn8bvn5dg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cse.amrith.drishti17volunteers",
+            "certificate_hash": "4b45ddad234560ea9117c164c645d87ebacce522"
+          }
+        },
+        {
+          "client_id": "37494669483-s5rv2h0djdkihefcpi6e3o5j2p5piajm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFRWtQtcFbDZfF-I5DZEEx7RD93Dq7Ij4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37494669483-s5rv2h0djdkihefcpi6e3o5j2p5piajm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

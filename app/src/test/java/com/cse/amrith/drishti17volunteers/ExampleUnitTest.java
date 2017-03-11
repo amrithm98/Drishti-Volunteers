@@ -2,6 +2,7 @@ package com.cse.amrith.drishti17volunteers;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 /**

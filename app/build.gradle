@@ -22,6 +22,7 @@ ext.supportLibVersion = '25.1.1'
 ext.firebaseVersion = '10.0.1'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile "com.google.android.gms:play-services-auth:${firebaseVersion}"
     compile "com.google.firebase:firebase-storage:${firebaseVersion}"
@@ -38,3 +39,4 @@ dependencies {
     compile 'io.gsonfire:gson-fire:1.8.0'
     compile 'com.facebook.android:facebook-android-sdk:4.18.0'
 }
+apply plugin: 'com.google.gms.google-services'
