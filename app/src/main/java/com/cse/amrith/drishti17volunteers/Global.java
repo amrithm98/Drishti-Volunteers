@@ -14,6 +14,7 @@ public class Global {
     public static String id;
     public static String user;
     public static String college;
+    public static int status;
     public final static int SUCCESS_CODE = 200;
 
 

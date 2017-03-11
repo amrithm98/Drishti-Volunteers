@@ -122,8 +122,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("user", admin.name);
                                         editor.putInt("status", admin.status);
-                                        Log.d("USER",String.valueOf(admin.status));
-                                        Log.d("TOKEN",token);
+                                        Global.status=admin.status;
+                                        Log.d("STATUS",String.valueOf(admin.status));
+                                        //Log.d("TOKEN",token);
                                         editor.commit();
                                         if (admin.status!=0) {
                                             Global.isguest = false;
@@ -134,6 +135,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                                 FirebaseAuth.getInstance().signOut();
                                                 autoLogin = false;
                                             } else {
+                                                startActivity(new Intent(Login.this, Login.class));
                                                 Toast.makeText(getApplicationContext(),"Not an Admin",Toast.LENGTH_LONG);
                                                 finish();
                                             }
