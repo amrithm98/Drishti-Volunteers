@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cse.amrith.drishti17volunteers.Models.Admin;
 import com.cse.amrith.drishti17volunteers.Models.Student;
 import com.cse.amrith.drishti17volunteers.Utils.ApiClient;
 import com.cse.amrith.drishti17volunteers.Utils.AuthUtil;
@@ -108,22 +109,24 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     final RestApiInterface service = ApiClient.getService();
                     AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
                         @Override
-                        public void tokenObtained(String token) {
-                            Call<Student> call=service.login(token);
-                            call.enqueue(new Callback<Student>() {
+                        public void tokenObtained(final String token) {
+                            Call<Admin> call=service.adminLogin(token);
+                            call.enqueue(new Callback<Admin>() {
                                 @Override
-                                public void onResponse(Call<Student> call, Response<Student> response) {
+                                public void onResponse(Call<Admin> call, Response<Admin> response) {
                                     if(response.code()==200) {
                                         Global.offline=false;
-                                        Student student = response.body();
-                                        Global.id = student.id;
+                                        Admin admin = response.body();
+                                        Global.user = admin.name;
                                         SharedPreferences sharedPreferences = getSharedPreferences("drishti", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("id", student.id);
+                                        editor.putString("user", admin.name);
+                                        editor.putInt("status", admin.status);
+                                        Log.d("USER",String.valueOf(admin.status));
+                                        Log.d("TOKEN",token);
                                         editor.commit();
-                                        if (student.registered) {
+                                        if (admin.status!=0) {
                                             Global.isguest = false;
-                                            Global.college = student.college;
                                             startActivity(new Intent(Login.this, Volunteer.class));
                                             finish();
                                         } else {
@@ -131,7 +134,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                                 FirebaseAuth.getInstance().signOut();
                                                 autoLogin = false;
                                             } else {
-                                                startActivity(new Intent(Login.this, Login.class));
+                                                Toast.makeText(getApplicationContext(),"Not an Admin",Toast.LENGTH_LONG);
                                                 finish();
                                             }
                                         }
@@ -140,7 +143,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     }
                                 }
                                 @Override
-                                public void onFailure(Call<Student> call, Throwable t) {
+                                public void onFailure(Call<Admin> call, Throwable t) {
                                     Log.d("Login","Fail");
                                     Toast.makeText(Login.this,"Login Failed",Toast.LENGTH_SHORT).show();
                                 }
@@ -162,7 +165,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Log.d("Facebook Login",loginResult+"");
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
-
             @Override
             public void onCancel() {
 

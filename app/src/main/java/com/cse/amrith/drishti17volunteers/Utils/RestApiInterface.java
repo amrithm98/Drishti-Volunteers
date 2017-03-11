@@ -1,5 +1,6 @@
 package com.cse.amrith.drishti17volunteers.Utils;
 
+import com.cse.amrith.drishti17volunteers.Models.Admin;
 import com.cse.amrith.drishti17volunteers.Models.Student;
 
 import retrofit2.Call;
@@ -15,5 +16,8 @@ public interface RestApiInterface {
     @FormUrlEncoded
     @POST("student/login")
     Call<Student> login(@Field("idToken") String idToken);
+    @FormUrlEncoded
+    @POST("/dcms-admin/auth/login")
+    Call<Admin> adminLogin(@Field("idToken") String idToken);
 
 }
