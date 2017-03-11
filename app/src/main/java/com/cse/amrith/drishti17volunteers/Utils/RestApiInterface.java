@@ -1,4 +1,4 @@
-package com.cse.amrith.drishti17volunteers;
+package com.cse.amrith.drishti17volunteers.Utils;
 
 import com.cse.amrith.drishti17volunteers.Models.Student;
 
@@ -15,4 +15,5 @@ public interface RestApiInterface {
     @FormUrlEncoded
     @POST("student/login")
     Call<Student> login(@Field("idToken") String idToken);
+
 }

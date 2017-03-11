@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cse.amrith.drishti17volunteers.Models.Student;
+import com.cse.amrith.drishti17volunteers.Utils.ApiClient;
+import com.cse.amrith.drishti17volunteers.Utils.AuthUtil;
+import com.cse.amrith.drishti17volunteers.Utils.NetworkUtil;
+import com.cse.amrith.drishti17volunteers.Utils.RestApiInterface;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,15 +41,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     Button gPlus;
-    Button fbButton;
+    Button fbButton,logout;
     boolean flag = true;
     boolean autoLogin=true;
     private GoogleApiClient mGoogleApiClient;
@@ -61,6 +63,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         setContentView(R.layout.activity_login);
         gPlus=(Button)findViewById(R.id.g_button);
         fbButton=(Button)findViewById(R.id.fb_button);
+        logout=(Button)findViewById(R.id.logout);
         gPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +124,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         if (student.registered) {
                                             Global.isguest = false;
                                             Global.college = student.college;
-                                            startActivity(new Intent(Login.this, Registration.class));
+                                            startActivity(new Intent(Login.this, Volunteer.class));
                                             finish();
                                         } else {
                                             if (autoLogin) {
@@ -136,7 +139,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         Toast.makeText(Login.this,"Network Error",Toast.LENGTH_SHORT).show();
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<Student> call, Throwable t) {
                                     Log.d("Login","Fail");

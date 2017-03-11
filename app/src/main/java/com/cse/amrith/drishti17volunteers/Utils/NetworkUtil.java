@@ -1,4 +1,4 @@
-package com.cse.amrith.drishti17volunteers;
+package com.cse.amrith.drishti17volunteers.Utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
