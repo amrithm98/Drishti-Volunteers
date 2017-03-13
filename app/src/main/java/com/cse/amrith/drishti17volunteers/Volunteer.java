@@ -24,7 +24,7 @@ public class Volunteer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check for volunteer Permission
-                if(Global.status==7){
+                if(Global.status==7 || Global.status==10){
                     Intent intent=new Intent(Volunteer.this,Registration.class);
                     startActivity(intent);
                 }
@@ -42,7 +42,6 @@ public class Volunteer extends AppCompatActivity {
                             });
                     alertDialog.show();
                 }
-
             }
         });
         event.setOnClickListener(new View.OnClickListener() {

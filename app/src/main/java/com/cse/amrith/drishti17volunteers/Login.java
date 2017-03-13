@@ -124,7 +124,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         editor.putInt("status", admin.status);
                                         Global.status=admin.status;
                                         Log.d("STATUS",String.valueOf(admin.status));
-                                        //Log.d("TOKEN",token);
+                                        Log.d("TOKEN",token);
                                         editor.commit();
                                         if (admin.status!=0) {
                                             Global.isguest = false;
