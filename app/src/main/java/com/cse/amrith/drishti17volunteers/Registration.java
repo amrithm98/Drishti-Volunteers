@@ -30,78 +30,54 @@ import retrofit2.Response;
 
 public class Registration extends AppCompatActivity {
     Button qr,regEvents;
+    TextView name;
     ListView events;
-    int uid=0;
+    String uid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_registation);
         regEvents=(Button)findViewById(R.id.regEvents);
+        name=(TextView)findViewById(R.id.tv_name);
         events=(ListView)findViewById(R.id.lv_events);
         if(getIntent()!=null)
         {
-             uid=getIntent().getIntExtra("UID",0);
-             if(uid!=0) {
-                 if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+             uid=getIntent().getStringExtra("UID");
+             if(uid!="") {
+                 //name.setText(Global.student.name);
+                 if(NetworkUtil.isNetworkAvailable(getApplicationContext())) {
                      AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
                          @Override
                          public void tokenObtained(String token) {
                              RestApiInterface service = ApiClient.getService();
-                             Call<Student> call = service.studentDetails(token,uid);
-                             call.enqueue(new Callback<Student>() {
+                             Call<List<RegisteredEvents>> call = service.eventStatus(token,uid);
+                             call.enqueue(new Callback<List<RegisteredEvents>> () {
                                  @Override
-                                 public void onResponse(Call<Student> call, Response<Student> response) {
+                                 public void onResponse(Call<List<RegisteredEvents>>  call, Response<List<RegisteredEvents>>  response) {
                                      if (response.code() == 200) {
-                                         Toast.makeText(getApplicationContext(), "Student Details Fetched", Toast.LENGTH_SHORT).show();
-                                         Student stud = response.body();
-                                         Log.d("Student", stud.toString());
+                                         List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
+                                         EventListAdapter adapter=new EventListAdapter(registeredEvents,getApplicationContext());
+                                         events.setAdapter(adapter);
                                      } else {
-                                         Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                         Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
                                      }
                                  }
                                  @Override
-                                 public void onFailure(Call<Student> call, Throwable t) {
-                                     Log.d("ERROR", t.toString());
-                                     Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                 public void onFailure(Call<List<RegisteredEvents>>  call, Throwable t) {
+                                     Log.d("ERROR",t.toString());
+                                     Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
+
                                  }
                              });
                          }
                      });
-                 } else {
-                     Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
+                 }else {
+                     Toast.makeText(getApplicationContext(),"Network Unavailable",Toast.LENGTH_SHORT);
+
                  }
              }
         }
-        if(NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-            AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
-                @Override
-                public void tokenObtained(String token) {
-                    RestApiInterface service = ApiClient.getService();
-                    Call<List<RegisteredEvents>> call = service.eventStatus(token,uid);
-                    call.enqueue(new Callback<List<RegisteredEvents>> () {
-                        @Override
-                        public void onResponse(Call<List<RegisteredEvents>>  call, Response<List<RegisteredEvents>>  response) {
-                            if (response.code() == 200) {
-                                List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
-                                EventListAdapter adapter=new EventListAdapter(registeredEvents,getApplicationContext());
-                                events.setAdapter(adapter);
-                            } else {
-                                Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<List<RegisteredEvents>>  call, Throwable t) {
-                            Log.d("ERROR",t.toString());
-                            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
 
-                        }
-                    });
-                }
-            });
-        }else {
-            Toast.makeText(getApplicationContext(),"Network Unavailable",Toast.LENGTH_SHORT);
-
-        }
     }
 }

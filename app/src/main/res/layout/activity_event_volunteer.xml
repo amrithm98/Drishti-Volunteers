@@ -15,31 +15,27 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/lin1"
         android:layout_marginTop="15dp">
 
         <TextView
-            android:text="UID"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/uid_text"
+            android:id="@+id/tv_name_event"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:textStyle="normal|bold"
             android:textColor="#fff"
             android:textSize="20sp"/>
     </LinearLayout>
-
-    <Button
-        android:text="Events"
-        android:layout_width="wrap_content"
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="120dp"
-        android:layout_marginStart="120dp"
-        android:id="@+id/events" />
+        android:layout_below="@+id/lin1"
+        android:id="@+id/eventList">
+
+    </ListView>
 </RelativeLayout>

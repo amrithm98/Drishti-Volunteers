@@ -28,7 +28,7 @@
             android:inputType="textPersonName"
             android:layout_below="@+id/code_info"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/identifier"
             android:hint="Phone" />
         <Button
             android:layout_width="match_parent"
