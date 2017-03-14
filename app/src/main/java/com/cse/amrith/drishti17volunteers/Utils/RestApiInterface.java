@@ -1,12 +1,16 @@
 package com.cse.amrith.drishti17volunteers.Utils;
 
 import com.cse.amrith.drishti17volunteers.Models.Admin;
+import com.cse.amrith.drishti17volunteers.Models.RegisteredEvents;
 import com.cse.amrith.drishti17volunteers.Models.Student;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -21,8 +25,14 @@ public interface RestApiInterface {
     @FormUrlEncoded
     @POST("/dcms-admin/auth/login")
     Call<Admin> adminLogin(@Field("idToken") String idToken);
+    @GET("/dcms-admin/volunteer/registeredEvents/{id}")
+    Call<List<RegisteredEvents>> eventStatus(@Header("x-auth-token")String token, @Path("id")int id);
+    @GET("/dcms-admin/student/{id}")
+    Call<Student> studentDetails(@Header("x-auth-token")String token,@Path("id")int id);
     @FormUrlEncoded
-    @GET("/dcms-admin/volunteer/eventRegistered/{id}")
-    Call<Admin> eventStatus(@Path("id") String id);
-
+    @POST("/dcms-admin/volunteer/addScore/{id}")
+    Call<String> addScore(@Header("x-auth-token")String token,@Path("id")int id,@Field("addScore")int score);
+    @FormUrlEncoded
+    @POST("/dcms-admin/volunteer/confirmPayment/{id}")
+    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")int id,@Field("eventId")int eid);
 }
