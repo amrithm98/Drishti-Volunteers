@@ -2,26 +2,26 @@ package com.cse.amrith.drishti17volunteers;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse.amrith.drishti17volunteers.Utils.QR;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Volunteer extends AppCompatActivity {
-    Button reg,event,logout,score;
+    TextView reg,event,logout,score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        reg=(Button)findViewById(R.id.reg_vol);
-        event=(Button)findViewById(R.id.event_vol);
-        logout=(Button)findViewById(R.id.logout);
-        score=(Button)findViewById(R.id.score);
+        reg=(TextView)findViewById(R.id.reg_vol);
+        event=(TextView)findViewById(R.id.event_vol);
+        logout=(TextView)findViewById(R.id.logout);
+        score=(TextView)findViewById(R.id.score);
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,16 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.cse.amrith.drishti17volunteers.Models.Admin;
-import com.cse.amrith.drishti17volunteers.Models.Student;
 import com.cse.amrith.drishti17volunteers.Utils.ApiClient;
 import com.cse.amrith.drishti17volunteers.Utils.AuthUtil;
 import com.cse.amrith.drishti17volunteers.Utils.NetworkUtil;
@@ -48,31 +47,32 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     Button gPlus;
-    Button fbButton,logout;
+    Button fbButton, logout;
     boolean flag = true;
-    boolean autoLogin=true;
+    boolean autoLogin = true;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "GoogleActivity";
     CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-        gPlus=(Button)findViewById(R.id.g_button);
-        fbButton=(Button)findViewById(R.id.fb_button);
-        logout=(Button)findViewById(R.id.logout);
+        gPlus = (Button) findViewById(R.id.g_button);
+        fbButton = (Button) findViewById(R.id.fb_button);
+        logout = (Button) findViewById(R.id.logout);
         gPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!NetworkUtil.isNetworkAvailable(Login.this)){
-                    Toast.makeText(Login.this,"Network Unavailable",Toast.LENGTH_LONG).show();
+                if (!NetworkUtil.isNetworkAvailable(Login.this)) {
+                    Toast.makeText(Login.this, "Network Unavailable", Toast.LENGTH_LONG).show();
                     return;
                 }
-                autoLogin=false;
+                autoLogin = false;
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -80,12 +80,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         fbButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!NetworkUtil.isNetworkAvailable(Login.this)){
-                    Toast.makeText(Login.this,"Network Unavailable",Toast.LENGTH_LONG).show();
+                if (!NetworkUtil.isNetworkAvailable(Login.this)) {
+                    Toast.makeText(Login.this, "Network Unavailable", Toast.LENGTH_LONG).show();
                     return;
                 }
-                autoLogin=false;
-                LoginManager.getInstance().logInWithReadPermissions(Login.this,Arrays.asList("email","public_profile"));
+                autoLogin = false;
+                LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("email", "public_profile"));
             }
         });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,29 +104,29 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 if (user != null) {
 
                     // User is signed in
-                    Global.uid=user.getUid();
-                    Global.user=user.getDisplayName();
+                    Global.uid = user.getUid();
+                    Global.user = user.getDisplayName();
                     final RestApiInterface service = ApiClient.getService();
                     AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
                         @Override
                         public void tokenObtained(final String token) {
-                            Call<Admin> call=service.adminLogin(token);
+                            Call<Admin> call = service.adminLogin(token);
                             call.enqueue(new Callback<Admin>() {
                                 @Override
                                 public void onResponse(Call<Admin> call, Response<Admin> response) {
-                                    if(response.code()==200) {
-                                        Global.offline=false;
+                                    if (response.code() == 200) {
+                                        Global.offline = false;
                                         Admin admin = response.body();
                                         Global.user = admin.name;
                                         SharedPreferences sharedPreferences = getSharedPreferences("drishti", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("user", admin.name);
                                         editor.putInt("status", admin.status);
-                                        Global.status=admin.status;
-                                        Log.d("STATUS",String.valueOf(admin.status));
-                                        Log.d("TOKEN",token);
+                                        Global.status = admin.status;
+                                        Log.d("STATUS", String.valueOf(admin.status));
+                                        Log.d("TOKEN", token);
                                         editor.commit();
-                                        if (admin.status!=0) {
+                                        if (admin.status != 0) {
                                             Global.isguest = false;
                                             startActivity(new Intent(Login.this, Volunteer.class));
                                             finish();
@@ -136,18 +136,19 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                                 autoLogin = false;
                                             } else {
                                                 startActivity(new Intent(Login.this, Login.class));
-                                                Toast.makeText(getApplicationContext(),"Not an Admin",Toast.LENGTH_LONG);
+                                                Toast.makeText(getApplicationContext(), "Not an Admin", Toast.LENGTH_LONG);
                                                 finish();
                                             }
                                         }
-                                    }else{
-                                        Toast.makeText(Login.this,"Network Error",Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(Login.this, "Network Error", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(Call<Admin> call, Throwable t) {
-                                    Log.d("Login","Fail");
-                                    Toast.makeText(Login.this,"Login Failed",Toast.LENGTH_SHORT).show();
+                                    Log.d("Login", "Fail");
+                                    Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -160,13 +161,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 }
             }
         };
-        callbackManager=CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("Facebook Login",loginResult+"");
+                Log.d("Facebook Login", loginResult + "");
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
+
             @Override
             public void onCancel() {
 
@@ -174,7 +176,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("error","error");
+                Log.d("error", "error");
             }
         });
     }
@@ -183,6 +185,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -196,11 +199,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -215,11 +219,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         }
     }
+
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        final ProgressDialog progressDialog=new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.dismiss();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -241,11 +246,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     }
                 });
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        final ProgressDialog progressDialog=new ProgressDialog(this);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Signing In");
         progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

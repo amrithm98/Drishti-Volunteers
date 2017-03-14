@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
     android:weightSum="1">
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <com.cse.amrith.drishti17volunteers.Utils.ui.SourceSansTextView
         android:id="@+id/event_name"
-        android:layout_weight="1.0"
-        android:textStyle="normal|bold"
-        android:textSize="18sp" />
-    <CheckBox
         android:layout_width="wrap_content"
-        android:id="@+id/event_paid"
         android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:text="TextView"
+        android:textSize="18sp" />
+
+    <CheckBox
+        android:id="@+id/event_paid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
         android:textAlignment="center" />
+
 </LinearLayout>

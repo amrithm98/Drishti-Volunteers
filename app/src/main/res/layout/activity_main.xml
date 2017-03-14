@@ -10,39 +10,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:layout_centerVertical="true"
     android:layout_centerHorizontal="true"
-    android:background="@drawable/blur4"
+    android:background="@color/colorPrimary"
     tools:context="com.cse.amrith.drishti17volunteers.Volunteer">
-    <Button
-        android:text="@string/event_volunteer"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/event_vol"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
-    <Button
+
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/home_text"
+        android:layout_alignParentBottom="true"
         android:text="Update Score"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+
         android:id="@+id/score"
-        android:layout_below="@+id/event_vol"
-        android:layout_centerHorizontal="true" />
+        />
 
-    <Button
-        android:text="Registration Volunteer"
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/reg_vol"
-        android:layout_above="@+id/event_vol"
-        android:layout_centerHorizontal="true"
-        android:layout_width="240dp" />
+        style="@style/home_text"
+        android:layout_above="@id/score"
+        android:text="@string/event_volunteer"
+        android:id="@+id/event_vol"
+        />
 
-    <Button
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/home_text"
+        android:layout_above="@id/event_vol"
+        android:text="Registration Volunteer"
+        android:id="@+id/reg_vol"
+        />
+
+
+    <TextView
         android:text="Logout"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:id="@+id/logout"
         android:layout_below="@+id/score"
         android:layout_alignLeft="@+id/score"
+        android:visibility="gone"
         android:layout_alignStart="@+id/score" />
 
 </RelativeLayout>

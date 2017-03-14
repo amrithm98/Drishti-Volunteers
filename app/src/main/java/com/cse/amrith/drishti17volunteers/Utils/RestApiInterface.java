@@ -22,17 +22,22 @@ public interface RestApiInterface {
     @FormUrlEncoded
     @POST("student/login")
     Call<Student> login(@Field("idToken") String idToken);
+
     @FormUrlEncoded
     @POST("/dcms-admin/auth/login")
     Call<Admin> adminLogin(@Field("idToken") String idToken);
+
     @GET("/dcms-admin/volunteer/registeredEvents/{id}")
-    Call<List<RegisteredEvents>> eventStatus(@Header("x-auth-token")String token, @Path("id")String id);
+    Call<List<RegisteredEvents>> eventStatus(@Header("x-auth-token") String token, @Path("id") String id);
+
     @GET("/dcms-admin/student/{id}")
-    Call<Student> studentDetails(@Header("x-auth-token")String token,@Path("id")int id);
+    Call<Student> studentDetails(@Header("x-auth-token") String token, @Path("id") int id);
+
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/addScore/{id}")
-    Call<String> addScore(@Header("x-auth-token")String token,@Path("id")int id,@Field("addScore")int score,@Field("reason")String reason);
+    Call<String> addScore(@Header("x-auth-token") String token, @Path("id") int id, @Field("addScore") int score, @Field("reason") String reason);
+
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")
-    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")int id,@Field("events")int eventId);
+    Call<String> confirmPayment(@Header("x-auth-token") String token, @Path("id") int id, @Field("events") int eventId);
 }
