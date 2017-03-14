@@ -31,8 +31,8 @@ public interface RestApiInterface {
     Call<Student> studentDetails(@Header("x-auth-token")String token,@Path("id")int id);
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/addScore/{id}")
-    Call<String> addScore(@Header("x-auth-token")String token,@Path("id")int id,@Field("addScore")int score);
+    Call<String> addScore(@Header("x-auth-token")String token,@Path("id")int id,@Field("addScore")int score,@Field("reason")String reason);
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")
-    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")int id,@Field("eventId")int eid);
+    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")int id,@Field("events[]")int event[],@Field("confirm[]") int confirm[]);
 }

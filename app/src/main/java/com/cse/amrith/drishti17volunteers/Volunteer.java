@@ -9,10 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cse.amrith.drishti17volunteers.Utils.QR;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Volunteer extends AppCompatActivity {
-    Button reg,event,logout;
+    Button reg,event,logout,score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +21,14 @@ public class Volunteer extends AppCompatActivity {
         reg=(Button)findViewById(R.id.reg_vol);
         event=(Button)findViewById(R.id.event_vol);
         logout=(Button)findViewById(R.id.logout);
+        score=(Button)findViewById(R.id.score);
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Check for volunteer Permission
                 if(Global.status==7 || Global.status==10){
-                    Intent intent=new Intent(Volunteer.this,Registration.class);
+                    Intent intent=new Intent(Volunteer.this,QR.class);
+                    intent.putExtra("Volunteer","reg");
                     startActivity(intent);
                 }
                 else
@@ -47,7 +50,16 @@ public class Volunteer extends AppCompatActivity {
         event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Volunteer.this,EventVolunteer.class);
+                Intent intent=new Intent(Volunteer.this,QR.class);
+                intent.putExtra("Volunteer","event");
+                startActivity(intent);
+            }
+        });
+        score.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Volunteer.this,QR.class);
+                intent.putExtra("Volunteer","update");
                 startActivity(intent);
             }
         });

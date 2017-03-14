@@ -14,27 +14,35 @@
     tools:context="com.cse.amrith.drishti17volunteers.Volunteer">
     <Button
         android:text="@string/event_volunteer"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:id="@+id/event_vol"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Logout"
-        android:layout_width="wrap_content"
+        android:text="Update Score"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:id="@+id/logout"
+        android:id="@+id/score"
         android:layout_below="@+id/event_vol"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Registration Volunteer"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/reg_vol"
-        android:layout_above="@+id/logout"
+        android:layout_above="@+id/event_vol"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp" />
+        android:layout_width="240dp" />
+
+    <Button
+        android:text="Logout"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/logout"
+        android:layout_below="@+id/score"
+        android:layout_alignLeft="@+id/score"
+        android:layout_alignStart="@+id/score" />
 
 </RelativeLayout>
