@@ -1,5 +1,7 @@
 package com.cse.amrith.drishti17volunteers;
 
+import com.cse.amrith.drishti17volunteers.Models.Student;
+
 /**
  * Created by amrith on 3/11/17.
  */
@@ -16,6 +18,5 @@ public class Global {
     public static String college;
     public static int status;
     public final static int SUCCESS_CODE = 200;
-
-
+    public static Student student;
 }
