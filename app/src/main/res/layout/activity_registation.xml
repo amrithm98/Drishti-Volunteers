@@ -8,37 +8,36 @@
     tools:context="com.cse.amrith.drishti17volunteers.Registration">
 
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_name"
-        android:textSize="18sp"
-        android:textStyle="normal|bold"
         android:textAlignment="center"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="normal|bold" />
+
+
+    <Button
+        android:id="@+id/payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/button_back"
+        android:padding="15dp"
+        android:text="Confirm Payment"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/regEvents"
+        android:layout_above="@+id/payment"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
+        >
         <ListView
             android:id="@+id/lv_events"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/regEvents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:layout_marginBottom="0dp"
-        android:background="@color/button_back"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:text="Confirm Payment" />
-
 </RelativeLayout>

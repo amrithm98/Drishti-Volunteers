@@ -133,7 +133,7 @@ public class QR extends AppCompatActivity {
                         int count=0;
                         public void run() {
                             cameraSource.stop();
-                            final int uid=Integer.parseInt(barcodes.valueAt(0).displayValue);
+                            final String uid=barcodes.valueAt(0).displayValue;
                             AlertDialog alertDialog = new AlertDialog.Builder(QR.this).create();
                             alertDialog.setTitle("Scanned");
                             alertDialog.setMessage("ID is "+uid);
@@ -142,33 +142,33 @@ public class QR extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             Toast.makeText(getApplicationContext(),"Scan success",Toast.LENGTH_SHORT).show();
-                                            if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-                                                AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
-                                                    @Override
-                                                    public void tokenObtained(String token) {
-                                                        RestApiInterface service = ApiClient.getService();
-                                                        Call<Student> call = service.studentDetails(token,uid);
-                                                        call.enqueue(new Callback<Student>() {
-                                                            @Override
-                                                            public void onResponse(Call<Student> call, Response<Student> response) {
-                                                                if (response.code() == 200) {
-                                                                    Toast.makeText(getApplicationContext(), "Student Details Fetched", Toast.LENGTH_SHORT).show();
-                                                                    Global.student = response.body();
-                                                                } else {
-                                                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                                                }
-                                                            }
-                                                            @Override
-                                                            public void onFailure(Call<Student> call, Throwable t) {
-                                                                Log.d("ERROR", t.toString());
-                                                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            } else {
-                                                Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
-                                            }
+//                                            if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+//                                                AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+//                                                    @Override
+//                                                    public void tokenObtained(String token) {
+//                                                        RestApiInterface service = ApiClient.getService();
+//                                                        Call<Student> call = service.studentDetails(token,Integer.parseInt(uid));
+//                                                        call.enqueue(new Callback<Student>() {
+//                                                            @Override
+//                                                            public void onResponse(Call<Student> call, Response<Student> response) {
+//                                                                if (response.code() == 200) {
+//                                                                    Toast.makeText(getApplicationContext(), "Student Details Fetched", Toast.LENGTH_SHORT).show();
+//                                                                    Global.student = response.body();
+//                                                                } else {
+//                                                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+//                                                                }
+//                                                            }
+//                                                            @Override
+//                                                            public void onFailure(Call<Student> call, Throwable t) {
+//                                                                Log.d("ERROR", t.toString());
+//                                                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+//                                                            }
+//                                                        });
+//                                                    }
+//                                                });
+//                                            } else {
+//                                                Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
+//                                            }
                                             if(getIntent().getStringExtra("Volunteer")!=null) {
                                                 String s = getIntent().getStringExtra("Volunteer");
                                                 if (s.equalsIgnoreCase("reg") && count==0) {

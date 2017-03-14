@@ -31,10 +31,13 @@ public class EventListAdapter extends BaseAdapter {
         registeredEvents = events;
         context = c;
     }
-
     @Override
     public int getCount() {
         return registeredEvents.size();
+    }
+    public List<RegisteredEvents> returnList()
+    {
+        return registeredEvents;
     }
 
     @Override
@@ -68,7 +71,6 @@ public class EventListAdapter extends BaseAdapter {
         convertView.setTag(tag);
         return convertView;
     }
-
     public List<RegisteredEvents> getRegisteredEvents() {
         return registeredEvents;
     }
