@@ -1,6 +1,8 @@
 package com.cse.amrith.drishti17volunteers.Utils;
 
 import com.cse.amrith.drishti17volunteers.Models.Admin;
+import com.cse.amrith.drishti17volunteers.Models.EventAdmin;
+import com.cse.amrith.drishti17volunteers.Models.EventModel;
 import com.cse.amrith.drishti17volunteers.Models.PaymentModel;
 import com.cse.amrith.drishti17volunteers.Models.RegisteredEvents;
 import com.cse.amrith.drishti17volunteers.Models.Student;
@@ -40,6 +42,12 @@ public interface RestApiInterface {
 
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")
-
     Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")String id,@Field("events")PaymentModel [] obj);
+
+    @GET("/dcms-admin/event/registeredCount/{id}")
+    Call <EventAdmin> getStudentList(@Header("x-auth-token") String token, @Path("id") int id);
+
+    @GET("/public/event")
+    Call <List<EventModel>> getEvents();
+
 }

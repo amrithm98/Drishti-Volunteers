@@ -12,10 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity
-            android:name=".Volunteer"
-            />
+        <activity android:name=".Volunteer" />
         <activity
             android:name=".Registration"
             android:label="@string/confirm_payment" />
@@ -37,8 +34,9 @@
         <activity
             android:name=".Utils.QR"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".Score"></activity>
+        <activity android:name=".Score" />
+        <activity android:name=".EventCoordinator" />
+        <activity android:name=".ChooseEvent"></activity>
     </application>
 
 </manifest>
