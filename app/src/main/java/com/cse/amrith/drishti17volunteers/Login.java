@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import retrofit2.Call;
@@ -49,7 +50,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     Button gPlus;
     Button fbButton, logout;
     boolean flag = true;
-    boolean autoLogin = true;
+    //    boolean autoLogin = true;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
@@ -64,7 +65,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         setContentView(R.layout.activity_login);
         gPlus = (Button) findViewById(R.id.g_button);
         fbButton = (Button) findViewById(R.id.fb_button);
-        logout = (Button) findViewById(R.id.logout);
         gPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     Toast.makeText(Login.this, "Network Unavailable", Toast.LENGTH_LONG).show();
                     return;
                 }
-                autoLogin = false;
+//                autoLogin = false;
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -84,7 +84,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     Toast.makeText(Login.this, "Network Unavailable", Toast.LENGTH_LONG).show();
                     return;
                 }
-                autoLogin = false;
+//                autoLogin = false;
                 LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList("email", "public_profile"));
             }
         });
@@ -125,21 +125,22 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         Global.status = admin.status;
                                         Log.d("STATUS", String.valueOf(admin.status));
                                         Log.d("TOKEN", token);
+                                        startActivity(new Intent(Login.this, Volunteer.class));
                                         editor.commit();
-                                        if (admin.status != 0) {
-                                            Global.isguest = false;
-                                            startActivity(new Intent(Login.this, Volunteer.class));
-                                            finish();
-                                        } else {
-                                            if (autoLogin) {
-                                                FirebaseAuth.getInstance().signOut();
-                                                autoLogin = false;
-                                            } else {
-                                                startActivity(new Intent(Login.this, Login.class));
-                                                Toast.makeText(getApplicationContext(), "Not an Admin", Toast.LENGTH_LONG);
-                                                finish();
-                                            }
-                                        }
+//                                        if (admin.status != 0) {
+//                                            Global.isguest = false;
+//                                            startActivity(new Intent(Login.this, Volunteer.class));
+//                                            finish();
+//                                        } else {
+//                                            if (autoLogin) {
+//                                                FirebaseAuth.getInstance().signOut();
+//                                                autoLogin = false;
+//                                            } else {
+//                                                startActivity(new Intent(Login.this, Login.class));
+//                                                Toast.makeText(getApplicationContext(), "Not an Admin", Toast.LENGTH_LONG);
+//                                                finish();
+//                                            }
+//                                        }
                                     } else {
                                         Toast.makeText(Login.this, "Network Error", Toast.LENGTH_SHORT).show();
                                     }
