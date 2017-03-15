@@ -32,7 +32,10 @@ public interface RestApiInterface {
     Call<List<RegisteredEvents>> eventStatus(@Header("x-auth-token") String token, @Path("id") String id);
 
     @GET("/dcms-admin/student/{id}")
-    Call<Student> studentDetails(@Header("x-auth-token") String token, @Path("id") int id);
+    Call<Student> studentDetails(@Header("x-auth-token") String token, @Path("id") String id);
+
+    @GET("/public/student/{id}")
+    Call<Student> studentDetailsPublic(@Path("id") String id);
 
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/addScore/{id}")
