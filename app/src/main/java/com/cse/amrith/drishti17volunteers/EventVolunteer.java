@@ -60,7 +60,6 @@ public class EventVolunteer extends AppCompatActivity {
                                 public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
                                     Log.d("ERROR", t.toString());
                                     Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-
                                 }
                             });
                         }

@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class Score extends AppCompatActivity {
     Button update;
     EditText score,reason;
-    int uid=0;
+    String uid="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,7 @@ public class Score extends AppCompatActivity {
         reason=(EditText)findViewById(R.id.reason);
         if(getIntent()!=null)
         {
-            uid=getIntent().getIntExtra("UID",0);
+            uid=getIntent().getStringExtra("UID");
             update.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

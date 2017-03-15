@@ -12,13 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:text="TextView"
-        android:textSize="18sp" />
-
+        android:textSize="18sp"
+        android:textColor="#000"/>
     <CheckBox
         android:id="@+id/event_paid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:buttonTint="@color/black"
         android:textAlignment="center" />
 
 </LinearLayout>

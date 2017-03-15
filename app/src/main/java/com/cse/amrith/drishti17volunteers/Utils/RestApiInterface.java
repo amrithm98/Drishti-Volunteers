@@ -36,7 +36,7 @@ public interface RestApiInterface {
 
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/addScore/{id}")
-    Call<String> addScore(@Header("x-auth-token") String token, @Path("id") int id, @Field("addScore") int score, @Field("reason") String reason);
+    Call<String> addScore(@Header("x-auth-token") String token, @Path("id") String  id, @Field("addScore") int score, @Field("reason") String reason);
 
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")

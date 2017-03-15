@@ -21,7 +21,6 @@
         android:layout_alignParentBottom="true"
         android:text="Update Score"
         android:layout_marginBottom="20dp"
-
         android:id="@+id/score"
         />
 
@@ -53,5 +52,15 @@
         android:layout_alignLeft="@+id/score"
         android:visibility="gone"
         android:layout_alignStart="@+id/score" />
+
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/home_text"
+        android:text="Event Coordinator"
+        android:id="@+id/eventAdmin"
+        android:layout_above="@+id/reg_vol"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
