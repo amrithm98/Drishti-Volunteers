@@ -16,6 +16,7 @@ import com.cse.amrith.drishti17volunteers.Utils.AuthUtil;
 import com.cse.amrith.drishti17volunteers.Utils.NetworkUtil;
 import com.cse.amrith.drishti17volunteers.Utils.RestApiInterface;
 import com.cse.amrith.drishti17volunteers.adapters.EventListAdapter;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -41,7 +42,6 @@ public class Registration extends AppCompatActivity {
         events = (ListView) findViewById(R.id.lv_events);
         if (getIntent() != null) {
             uid = getIntent().getStringExtra("UID");
-            payment = (Button) findViewById(R.id.payment);
             name = (TextView) findViewById(R.id.tv_name);
             events = (ListView) findViewById(R.id.lv_events);
             if (getIntent() != null) {
@@ -59,7 +59,8 @@ public class Registration extends AppCompatActivity {
                                     public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
                                         if (response.code() == 200) {
                                             List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
-                                            EventListAdapter adapter = new EventListAdapter(registeredEvents, getApplicationContext());
+                                            Log.i("got events", new Gson().toJson(registeredEvents));
+                                            EventListAdapter adapter = new EventListAdapter(registeredEvents, getApplicationContext(),Long.valueOf(uid));
                                             events.setAdapter(adapter);
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
@@ -80,53 +81,53 @@ public class Registration extends AppCompatActivity {
                     }
                 }
             }
-            payment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventListAdapter adapter = (EventListAdapter) events.getAdapter();
-                    List<RegisteredEvents> finalList = adapter.returnList();
-                    final PaymentModel[] objects = new PaymentModel[adapter.getCount()];
-                    int i = 0;
-                    String s = "";
-                    for (RegisteredEvents reg : finalList) {
-                        objects[i] = new PaymentModel();
-                        objects[i].eventId = reg.id;
-                        objects[i].paid = reg.paid;
-                        s += String.valueOf(objects[i].eventId) + " " + String.valueOf(objects[i].paid + "X");
-                        i = i + 1;
-                    }
-                    if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-                        AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
-                            @Override
-                            public void tokenObtained(String token) {
-                                RestApiInterface service = ApiClient.getService();
-                                Call<String> call = service.confirmPayment(token, uid, objects);
-                                call.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        if (response.code() == 200) {
-                                            Toast.makeText(getApplicationContext(), "Payment Updated", Toast.LENGTH_SHORT).show();
-                                            Log.d("Response",String.valueOf(response.body()));
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
 
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        Log.d("ERROR", t.toString());
-                                        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
-                    }
-                    //Log.d("TAG",s);
-                }
-            });
-
+//            payment.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    EventListAdapter adapter = (EventListAdapter) events.getAdapter();
+//                    List<RegisteredEvents> finalList = adapter.returnList();
+//                    final PaymentModel[] objects = new PaymentModel[adapter.getCount()];
+//                    int i = 0;
+//                    String s = "";
+//                    for (RegisteredEvents reg : finalList) {
+//                        objects[i] = new PaymentModel();
+//                        objects[i].eventId = reg.id;
+//                        objects[i].paid = reg.paid;
+//                        s += String.valueOf(objects[i].eventId) + " " + String.valueOf(objects[i].paid + "X");
+//                        i = i + 1;
+//                    }
+//                    if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+//                        AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+//                            @Override
+//                            public void tokenObtained(String token) {
+//                                RestApiInterface service = ApiClient.getService();
+//                                Call<String> call = service.confirmPayment(token, uid, objects);
+//                                call.enqueue(new Callback<String>() {
+//                                    @Override
+//                                    public void onResponse(Call<String> call, Response<String> response) {
+//                                        if (response.code() == 200) {
+//                                            Toast.makeText(getApplicationContext(), "Payment Updated", Toast.LENGTH_SHORT).show();
+//                                            Log.d("Response",String.valueOf(response.body()));
+//                                        } else {
+//                                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(Call<String> call, Throwable t) {
+//                                        Log.d("ERROR", t.toString());
+//                                        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
+//                    }
+//                    //Log.d("TAG",s);
+//                }
+//            });
         }
     }
 

@@ -41,8 +41,6 @@
         android:text="Registration Volunteer"
         android:id="@+id/reg_vol"
         />
-
-
     <TextView
         android:text="Logout"
         android:layout_width="240dp"
