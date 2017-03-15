@@ -40,7 +40,7 @@ public class Volunteer extends AppCompatActivity {
                             "OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
                                 }
                             });
                     alertDialog.show();
@@ -65,7 +65,7 @@ public class Volunteer extends AppCompatActivity {
                             "OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
                                 }
                             });
                     alertDialog.show();
@@ -83,9 +83,23 @@ public class Volunteer extends AppCompatActivity {
         score.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Volunteer.this,QR.class);
-                intent.putExtra("Volunteer","update");
-                startActivity(intent);
+                if(Global.status>=8) {
+                    Intent intent = new Intent(Volunteer.this, QR.class);
+                    intent.putExtra("Volunteer", "update");
+                    startActivity(intent);
+                }else{
+                    AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
+                    alertDialog.setTitle("Unauthorized");
+                    alertDialog.setMessage("You are not an admin");
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
+                            "OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                        Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    alertDialog.show();
+                }
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
