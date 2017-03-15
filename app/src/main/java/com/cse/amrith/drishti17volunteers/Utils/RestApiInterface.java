@@ -40,6 +40,5 @@ public interface RestApiInterface {
 
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")
-
-    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")String id,@Field("events")PaymentModel [] obj);
+    Call<PaymentModel> confirmPayment(@Header("x-auth-token") String token, @Path("id") long id, @Field("eventId") int eventId, @Field("paid") boolean paid);
 }
