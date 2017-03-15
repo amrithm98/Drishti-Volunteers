@@ -43,9 +43,7 @@ public interface RestApiInterface {
     @POST("/dcms-admin/volunteer/addScore/{id}")
     Call<String> addScore(@Header("x-auth-token") String token, @Path("id") String  id, @Field("addScore") int score, @Field("reason") String reason);
 
-    @FormUrlEncoded
-    @POST("/dcms-admin/volunteer/confirmPayment/{id}")
-    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")String id,@Field("events")PaymentModel [] obj);
+//    Call<String> confirmPayment(@Header("x-auth-token")String token,@Path("id")String id,@Field("events")PaymentModel [] obj);
 
     @GET("/dcms-admin/event/registeredCount/{id}")
     Call <EventAdmin> getStudentList(@Header("x-auth-token") String token, @Path("id") int id);
@@ -53,5 +51,7 @@ public interface RestApiInterface {
     @GET("/public/event")
     Call <List<EventModel>> getEvents();
 
+    @FormUrlEncoded
+    @POST("/dcms-admin/volunteer/confirmPayment/{id}")
     Call<PaymentModel> confirmPayment(@Header("x-auth-token") String token, @Path("id") long id, @Field("eventId") int eventId, @Field("paid") boolean paid);
 }
