@@ -100,6 +100,7 @@ public class Registration extends AppCompatActivity {
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         if (response.code() == 200) {
                                             Toast.makeText(getApplicationContext(), "Payment Updated", Toast.LENGTH_SHORT).show();
+                                            Log.d("Response",String.valueOf(response.body()));
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
                                         }
