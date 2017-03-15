@@ -1,10 +1,13 @@
 package com.cse.amrith.drishti17volunteers.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -26,17 +29,20 @@ public class EventListAdapter extends BaseAdapter {
 
     List<RegisteredEvents> registeredEvents;
     Context context;
+    long userId;
 
-    public EventListAdapter(List<RegisteredEvents> events, Context c) {
+    public EventListAdapter(List<RegisteredEvents> events, Context c, long aLong) {
         registeredEvents = events;
         context = c;
+        userId = aLong;
     }
+
     @Override
     public int getCount() {
         return registeredEvents.size();
     }
-    public List<RegisteredEvents> returnList()
-    {
+
+    public List<RegisteredEvents> returnList() {
         return registeredEvents;
     }
 
@@ -54,34 +60,43 @@ public class EventListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Tag tag;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_registeredevent, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_confirm, parent, false);
             tag = new Tag(convertView);
         } else {
             tag = (Tag) convertView.getTag();
         }
         final RegisteredEvents event = (RegisteredEvents) getItem(position);
         tag.tvName.setText(event.name);
-        tag.cbPaid.setChecked(event.paid);
-        tag.cbPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                event.paid = isChecked;
-            }
-        });
+        if (event.paid)
+            tag.tvName.setTextColor(Color.parseColor("#00897b"));
+        else
+            tag.tvName.setTextColor(Color.BLACK);
+        if (userId == event.registeredStudent) {
+            tag.bConf.setVisibility(View.VISIBLE);
+            if (event.paid) {
+                tag.bConf.setText("Refund");
+            } else
+                tag.bConf.setText("Pay");
+            tag.bConf.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("paying", event.id + "");
+                }
+            });
+        } else {
+            tag.bConf.setVisibility(View.INVISIBLE);
+        }
         convertView.setTag(tag);
         return convertView;
-    }
-    public List<RegisteredEvents> getRegisteredEvents() {
-        return registeredEvents;
     }
 
     static class Tag {
         TextView tvName;
-        CheckBox cbPaid;
+        Button bConf;
 
         Tag(View v) {
-            tvName = (TextView) v.findViewById(R.id.event_name);
-            cbPaid = (CheckBox) v.findViewById(R.id.event_paid);
+            tvName = (TextView) v.findViewById(R.id.tv_name_conf);
+            bConf = (Button) v.findViewById(R.id.button_conf);
         }
     }
 
