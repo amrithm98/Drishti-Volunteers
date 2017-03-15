@@ -1,5 +1,6 @@
 package com.cse.amrith.drishti17volunteers;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,13 +26,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity implements EventListAdapter.EventListListener {
 
 
     Button qr, payment;
     TextView name;
     ListView events;
     String uid = "";
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,10 @@ public class Registration extends AppCompatActivity {
         setContentView(R.layout.activity_registation);
         name = (TextView) findViewById(R.id.tv_name);
         events = (ListView) findViewById(R.id.lv_events);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setCancelable(false);
         if (getIntent() != null) {
             uid = getIntent().getStringExtra("UID");
             name = (TextView) findViewById(R.id.tv_name);
@@ -49,6 +55,7 @@ public class Registration extends AppCompatActivity {
                 if (uid != "") {
                     //name.setText(Global.student.name);
                     if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+                        progressDialog.show();
                         AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
                             @Override
                             public void tokenObtained(String token) {
@@ -57,10 +64,11 @@ public class Registration extends AppCompatActivity {
                                 call.enqueue(new Callback<List<RegisteredEvents>>() {
                                     @Override
                                     public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
+                                        progressDialog.dismiss();
                                         if (response.code() == 200) {
                                             List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
                                             Log.i("got events", new Gson().toJson(registeredEvents));
-                                            EventListAdapter adapter = new EventListAdapter(registeredEvents, getApplicationContext(),Long.valueOf(uid));
+                                            EventListAdapter adapter = new EventListAdapter(registeredEvents, Registration.this, Long.valueOf(uid));
                                             events.setAdapter(adapter);
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
@@ -69,9 +77,9 @@ public class Registration extends AppCompatActivity {
 
                                     @Override
                                     public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
+                                        progressDialog.dismiss();
                                         Log.d("ERROR", t.toString());
                                         Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-
                                     }
                                 });
                             }
@@ -131,4 +139,13 @@ public class Registration extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void showLoading() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        progressDialog.dismiss();
+    }
 }
