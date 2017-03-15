@@ -253,6 +253,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Signing In");
+        progressDialog.setCancelable(false);
         progressDialog.show();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

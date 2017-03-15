@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <com.cse.amrith.drishti17volunteers.Utils.ui.SourceSansTextView
             android:id="@+id/tv_name_conf"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical|center_horizontal"
+            android:layout_toLeftOf="@+id/button_conf"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Event Name"
             android:textSize="17sp" />
-
-        <CheckBox
-            android:id="@+id/check_conf"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/button_conf"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:text="Pay" />
+            android:layout_alignParentRight="true"
+            android:background="#37474f"
+            android:text="Pay"
+            android:textColor="@color/white" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lines_grey"
-      />
+        android:background="@color/lines_grey" />
 </LinearLayout>

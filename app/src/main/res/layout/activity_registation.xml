@@ -16,28 +16,15 @@
         android:textSize="18sp"
         android:textStyle="normal|bold" />
 
-
-    <Button
-        android:id="@+id/payment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:background="@color/button_back"
-        android:padding="15dp"
-        android:text="Confirm Payment"
-        android:textColor="@color/white" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/payment"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_height="match_parent">
+
         <ListView
             android:id="@+id/lv_events"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_confirm" />
 
     </LinearLayout>
 </RelativeLayout>

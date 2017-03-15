@@ -1,6 +1,7 @@
 package com.cse.amrith.drishti17volunteers.Utils;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,17 +21,21 @@ import android.widget.Toast;
 
 import com.cse.amrith.drishti17volunteers.EventVolunteer;
 import com.cse.amrith.drishti17volunteers.Global;
+import com.cse.amrith.drishti17volunteers.Models.RegisteredEvents;
 import com.cse.amrith.drishti17volunteers.Models.Student;
 import com.cse.amrith.drishti17volunteers.R;
 import com.cse.amrith.drishti17volunteers.Registration;
 import com.cse.amrith.drishti17volunteers.Score;
 import com.cse.amrith.drishti17volunteers.Volunteer;
+import com.cse.amrith.drishti17volunteers.adapters.EventListAdapter;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,8 +47,9 @@ public class QR extends AppCompatActivity {
     SurfaceView cameraView;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
-    Button check;
     EditText identifier;
+    Button bCheck;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,36 +60,8 @@ public class QR extends AppCompatActivity {
                 new BarcodeDetector.Builder(this)
                         .setBarcodeFormats(Barcode.QR_CODE)
                         .build();
-        check=(Button)findViewById(R.id.check);
-        identifier=(EditText)findViewById(R.id.identifier);
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getIntent().getStringExtra("Volunteer")!=null && identifier.getText()!=null) {
-                    String s = getIntent().getStringExtra("Volunteer");
-                    String id=identifier.getText().toString();
-                    if (s.equalsIgnoreCase("reg")) {
-                        Log.d("Intnt",getIntent().getStringExtra("Volunteer"));
-                        Intent intent = new Intent(QR.this, Registration.class);
-                        intent.putExtra("UID",id);
-                        startActivity(intent);
-                        finish();
-                    } else if (s.equalsIgnoreCase("event")) {
-                        Intent intent = new Intent(QR.this, EventVolunteer.class);
-                        intent.putExtra("UID", id);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else if(s.equalsIgnoreCase("update"))
-                    {
-                        Intent intent = new Intent(QR.this,Score.class);
-                        intent.putExtra("UID",id);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            }
-        });
+        identifier = (EditText) findViewById(R.id.identifier);
+        bCheck = (Button) findViewById(R.id.check);
         cameraSource = new CameraSource
                 .Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(640, 480)
@@ -130,75 +108,93 @@ public class QR extends AppCompatActivity {
                 if (barcodes.size() != 0) {
                     barcodeInfo.post(new Runnable() {
                         // Use the post method of the TextView
-                        int count=0;
+                        int count = 0;
+
                         public void run() {
                             cameraSource.stop();
-                            final String uid=barcodes.valueAt(0).displayValue;
-                            AlertDialog alertDialog = new AlertDialog.Builder(QR.this).create();
-                            alertDialog.setTitle("Scanned");
-                            alertDialog.setMessage("ID is "+uid);
-                            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
-                                    "OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Toast.makeText(getApplicationContext(),"Scan success",Toast.LENGTH_SHORT).show();
-//                                            if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-//                                                AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
-//                                                    @Override
-//                                                    public void tokenObtained(String token) {
-//                                                        RestApiInterface service = ApiClient.getService();
-//                                                        Call<Student> call = service.studentDetails(token,Integer.parseInt(uid));
-//                                                        call.enqueue(new Callback<Student>() {
-//                                                            @Override
-//                                                            public void onResponse(Call<Student> call, Response<Student> response) {
-//                                                                if (response.code() == 200) {
-//                                                                    Toast.makeText(getApplicationContext(), "Student Details Fetched", Toast.LENGTH_SHORT).show();
-//                                                                    Global.student = response.body();
-//                                                                } else {
-//                                                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-//                                                                }
-//                                                            }
-//                                                            @Override
-//                                                            public void onFailure(Call<Student> call, Throwable t) {
-//                                                                Log.d("ERROR", t.toString());
-//                                                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-//                                                            }
-//                                                        });
-//                                                    }
-//                                                });
-//                                            } else {
-//                                                Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
-//                                            }
-                                            if(getIntent().getStringExtra("Volunteer")!=null) {
-                                                String s = getIntent().getStringExtra("Volunteer");
-                                                if (s.equalsIgnoreCase("reg") && count==0) {
-                                                    count+=1;
-                                                    Log.d("Intnt",getIntent().getStringExtra("Volunteer"));
-                                                    Intent intent = new Intent(QR.this, Registration.class);
-                                                    intent.putExtra("UID", uid);
-                                                    startActivity(intent);
-                                                    finish();
-                                                } else if (s.equalsIgnoreCase("event") && count==0) {
-                                                    count+=1;
-                                                    Intent intent = new Intent(QR.this, EventVolunteer.class);
-                                                    intent.putExtra("UID", uid);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                                else if(s.equalsIgnoreCase("update") && count==0)
-                                                {
-                                                    Intent intent = new Intent(QR.this,Score.class);
-                                                    intent.putExtra("UID", uid);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                            }
-                                        }
-                                    });
-                            alertDialog.show();
+                            final String uid = barcodes.valueAt(0).displayValue;
+                            if (getIntent().getStringExtra("Volunteer") != null) {
+                                String s = getIntent().getStringExtra("Volunteer");
+                                if (s.equalsIgnoreCase("reg") && count == 0) {
+                                    count += 1;
+                                    Log.d("Intnt", getIntent().getStringExtra("Volunteer"));
+                                    Intent intent = new Intent(QR.this, Registration.class);
+                                    intent.putExtra("UID", uid);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (s.equalsIgnoreCase("event") && count == 0) {
+                                    count += 1;
+                                    Intent intent = new Intent(QR.this, EventVolunteer.class);
+                                    intent.putExtra("UID", uid);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (s.equalsIgnoreCase("update") && count == 0) {
+                                    Intent intent = new Intent(QR.this, Score.class);
+                                    intent.putExtra("UID", uid);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
                             Thread.currentThread().isInterrupted();
                         }
                     });
+                }
+            }
+        });
+
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading");
+
+        bCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+                    progressDialog.show();
+                    RestApiInterface service = ApiClient.getService();
+                    Call<Student> call = service.studentDetailsPublic(identifier.getText().toString());
+                    call.enqueue(new Callback<Student>() {
+                        @Override
+                        public void onResponse(Call<Student> call, Response<Student> response) {
+                            progressDialog.dismiss();
+                            if (response.code() == 200) {
+                                Student student = response.body();
+                                if (getIntent().getStringExtra("Volunteer") != null) {
+                                    String s = getIntent().getStringExtra("Volunteer");
+                                    String uid = student.id;
+                                    if (s.equalsIgnoreCase("reg")) {
+                                        Log.d("Intnt", getIntent().getStringExtra("Volunteer"));
+                                        Intent intent = new Intent(QR.this, Registration.class);
+                                        intent.putExtra("UID", uid);
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (s.equalsIgnoreCase("event")) {
+                                        Intent intent = new Intent(QR.this, EventVolunteer.class);
+                                        intent.putExtra("UID", uid);
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (s.equalsIgnoreCase("update")) {
+                                        Intent intent = new Intent(QR.this, Score.class);
+                                        intent.putExtra("UID", uid);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No user", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Student> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Log.d("ERROR", t.toString());
+                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
                 }
             }
         });

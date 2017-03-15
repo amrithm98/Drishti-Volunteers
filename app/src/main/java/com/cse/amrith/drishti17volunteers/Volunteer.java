@@ -13,7 +13,7 @@ import com.cse.amrith.drishti17volunteers.Utils.QR;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Volunteer extends AppCompatActivity {
-    TextView reg,event,logout,score;
+    TextView reg,event,logout,score,eventCoordinator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,11 +22,36 @@ public class Volunteer extends AppCompatActivity {
         event=(TextView)findViewById(R.id.event_vol);
         logout=(TextView)findViewById(R.id.logout);
         score=(TextView)findViewById(R.id.score);
+        eventCoordinator=(TextView)findViewById(R.id.eventAdmin);
+        eventCoordinator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Global.status>=8)
+                {
+                    Intent intent=new Intent(Volunteer.this,EventCoordinator.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
+                    alertDialog.setTitle("Unauthorized");
+                    alertDialog.setMessage("You are not an Event Coordinator!");
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
+                            "OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        });
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Check for volunteer Permission
-                if(Global.status==7 || Global.status==10){
+                if(Global.status>=7){
                     Intent intent=new Intent(Volunteer.this,QR.class);
                     intent.putExtra("Volunteer","reg");
                     startActivity(intent);

@@ -2,6 +2,8 @@ package com.cse.amrith.drishti17volunteers.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by amrith on 3/11/17.
  */
