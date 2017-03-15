@@ -14,7 +14,7 @@
     tools:context="com.cse.amrith.drishti17volunteers.Volunteer">
 
 
-    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+    <com.cse.amrith.drishti17volunteers.Utils.ui.RalewayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/home_text"
@@ -24,7 +24,7 @@
         android:id="@+id/score"
         />
 
-    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+    <com.cse.amrith.drishti17volunteers.Utils.ui.RalewayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/home_text"
@@ -33,7 +33,7 @@
         android:id="@+id/event_vol"
         />
 
-    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+    <com.cse.amrith.drishti17volunteers.Utils.ui.RalewayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/home_text"
@@ -51,7 +51,7 @@
         android:visibility="gone"
         android:layout_alignStart="@+id/score" />
 
-    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+    <com.cse.amrith.drishti17volunteers.Utils.ui.RalewayTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/home_text"
