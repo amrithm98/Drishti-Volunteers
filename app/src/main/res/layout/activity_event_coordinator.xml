@@ -9,7 +9,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cse.amrith.drishti17volunteers.EventCoordinator">
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/dummy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <AutoCompleteTextView
+            android:id="@+id/event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Name"/>
+    </android.support.design.widget.TextInputLayout>
+
     <ListView
+        android:layout_below="@id/dummy"
         android:id="@+id/eventCoordinatorList"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
