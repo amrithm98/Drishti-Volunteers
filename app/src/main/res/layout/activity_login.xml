@@ -54,4 +54,17 @@
             android:layout_centerVertical="true"
             android:textAlignment="center" />
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:padding="10dp"
+        android:background="#c4101e33"
+        android:text="Skip Login "
+        android:drawableRight="@drawable/ic_arrow_forward_white_24dp"
+        android:id="@+id/skiplogin"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

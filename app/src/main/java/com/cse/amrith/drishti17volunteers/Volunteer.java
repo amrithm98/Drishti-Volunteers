@@ -64,7 +64,7 @@ public class Volunteer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check for volunteer Permission
-                if (Global.status >= 7) {
+                if (Global.status == 7 || Global.status > 8) {
                     Intent intent = new Intent(Volunteer.this, QR.class);
                     intent.putExtra("Volunteer", "reg");
                     startActivity(intent);
@@ -101,7 +101,7 @@ public class Volunteer extends AppCompatActivity {
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
                     alertDialog.setTitle("Unauthorized");
-                    alertDialog.setMessage("You are not an admin");
+                    alertDialog.setMessage("You are not an event coordinator admin");
                     alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
                             "OK", new DialogInterface.OnClickListener() {
                                 @Override

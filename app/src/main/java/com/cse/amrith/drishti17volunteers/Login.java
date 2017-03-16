@@ -180,6 +180,14 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 Log.d("error", "error");
             }
         });
+
+        findViewById(R.id.skiplogin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Global.status = 0;
+                startActivity(new Intent(Login.this, Volunteer.class));
+            }
+        });
     }
 
     @Override
