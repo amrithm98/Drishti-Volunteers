@@ -64,7 +64,7 @@ public class Volunteer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check for volunteer Permission
-                if (Global.status >= 7) {
+                if (Global.status == 7 || Global.status > 8) {
                     Intent intent = new Intent(Volunteer.this, QR.class);
                     intent.putExtra("Volunteer", "reg");
                     startActivity(intent);
