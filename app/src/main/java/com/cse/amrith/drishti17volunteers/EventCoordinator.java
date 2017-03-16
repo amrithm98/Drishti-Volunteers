@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.cse.amrith.drishti17volunteers.Utils.NetworkUtil;
 import com.cse.amrith.drishti17volunteers.Utils.RestApiInterface;
 import com.cse.amrith.drishti17volunteers.adapters.EventListAdapter;
 import com.cse.amrith.drishti17volunteers.adapters.StudentListAdapter;
+import com.cse.amrith.drishti17volunteers.adapters.StudentListExpandableAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -32,13 +34,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EventCoordinator extends AppCompatActivity {
-    ListView lv;
+    ExpandableListView lv;
     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_coordinator);
-        lv=(ListView)findViewById(R.id.eventCoordinatorList);
+        lv=(ExpandableListView)findViewById(R.id.eventCoordinatorList);
         final HashMap<String,Integer> searchList=new HashMap<>();
         final AutoCompleteTextView event=(AutoCompleteTextView)findViewById(R.id.event);
         event.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,7 +91,7 @@ public class EventCoordinator extends AppCompatActivity {
                         if (response.code() == 200) {
                             EventAdmin EventAdmin= (EventAdmin)response.body();
                             Log.i("got events", new Gson().toJson(EventAdmin));
-                            lv.setAdapter(new StudentListAdapter(EventCoordinator.this, (ArrayList<EventAdminStudentModel>) EventAdmin.students));
+                            lv.setAdapter(new StudentListExpandableAdapter(EventCoordinator.this, (ArrayList<EventAdminStudentModel>) EventAdmin.students));
                         } else {
                             Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
                         }

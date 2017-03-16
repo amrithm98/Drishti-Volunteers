@@ -19,11 +19,16 @@
             android:layout_height="wrap_content"
             android:hint="Event Name"/>
     </android.support.design.widget.TextInputLayout>
-
-    <ListView
-        android:layout_below="@id/dummy"
+    <ExpandableListView
         android:id="@+id/eventCoordinatorList"
+        android:layout_below="@id/dummy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:groupIndicator="@null"/>
+    <!--<ListView-->
+        <!--android:layout_below="@id/dummy"-->
+        <!--android:id="@+id/eventCoordinatorList"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</ListView>-->
 </RelativeLayout>
