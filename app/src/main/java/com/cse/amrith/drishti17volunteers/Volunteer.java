@@ -119,7 +119,7 @@ public class Volunteer extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (Global.status >= 8) {
+                if (Global.status >= 9) {
                     startActivity(new Intent(Volunteer.this,NotificationActivity.class));
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
