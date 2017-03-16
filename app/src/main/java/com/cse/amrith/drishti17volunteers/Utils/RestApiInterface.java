@@ -15,6 +15,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -54,4 +55,8 @@ public interface RestApiInterface {
     @FormUrlEncoded
     @POST("/dcms-admin/volunteer/confirmPayment/{id}")
     Call<PaymentModel> confirmPayment(@Header("x-auth-token") String token, @Path("id") long id, @Field("eventId") int eventId, @Field("paid") boolean paid);
+
+    @FormUrlEncoded
+    @PUT("dcms-admin/notification")
+    Call<String> sendNotif(@Header("x-auth-token") String token,@Field("title")String title,@Field("body")String body);
 }

@@ -60,5 +60,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:text="Event Coordinator" />
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:id="@+id/notif"
+        style="@style/home_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/eventAdmin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Send notification" />
 
 </RelativeLayout>
