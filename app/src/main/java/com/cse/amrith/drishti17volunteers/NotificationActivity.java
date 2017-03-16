@@ -54,16 +54,16 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onResponse(Call<String> call, Response<String> response) {
                         progressDialog.dismiss();
                         if(response.code()==200)
-                            Toast.makeText(NotificationActivity.this,"Sent",Toast.LENGTH_SHORT);
+                            Toast.makeText(NotificationActivity.this,"Sent",Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(NotificationActivity.this,"Failed",Toast.LENGTH_SHORT);
+                            Toast.makeText(NotificationActivity.this,"Failed",Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         progressDialog.dismiss();
-                        Toast.makeText(NotificationActivity.this,"Failed",Toast.LENGTH_SHORT);
+                        Toast.makeText(NotificationActivity.this,"Failed",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
