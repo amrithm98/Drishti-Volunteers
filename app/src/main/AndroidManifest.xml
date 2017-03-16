@@ -41,6 +41,7 @@
             android:name=".Utils.QR"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Score"
             android:screenOrientation="portrait" />
@@ -49,6 +50,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ChooseEvent"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".NotificationActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -16,11 +16,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse.amrith.drishti17volunteers.Utils.AuthUtil;
 import com.cse.amrith.drishti17volunteers.Utils.QR;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Volunteer extends AppCompatActivity {
-    TextView reg, event, logout, score, eventCoordinator;
+    TextView reg, event, logout, score, eventCoordinator,notif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class Volunteer extends AppCompatActivity {
         event = (TextView) findViewById(R.id.event_vol);
         logout = (TextView) findViewById(R.id.logout);
         score = (TextView) findViewById(R.id.score);
+        notif = (TextView) findViewById(R.id.notif);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Log.i("version", "M");
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -111,6 +113,28 @@ public class Volunteer extends AppCompatActivity {
                             });
                     alertDialog.show();
                 }
+            }
+        });
+        notif.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Global.status >= 9) {
+                    startActivity(new Intent(Volunteer.this,NotificationActivity.class));
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
+                    alertDialog.setTitle("Unauthorized");
+                    alertDialog.setMessage("You are not an admin");
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
+                            "OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                        Toast.makeText(getApplicationContext(),"Login as Events Volunteer",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    alertDialog.show();
+                }
+
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
