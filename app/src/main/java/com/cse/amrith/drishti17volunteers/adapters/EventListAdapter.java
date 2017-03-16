@@ -14,6 +14,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse.amrith.drishti17volunteers.EventVolunteer;
+import com.cse.amrith.drishti17volunteers.Global;
 import com.cse.amrith.drishti17volunteers.Models.PaymentModel;
 import com.cse.amrith.drishti17volunteers.Models.RegisteredEvents;
 import com.cse.amrith.drishti17volunteers.R;
@@ -24,6 +26,8 @@ import com.cse.amrith.drishti17volunteers.Utils.RestApiInterface;
 import com.google.gson.Gson;
 
 import java.util.List;
+
+import javax.microedition.khronos.opengles.GL;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -75,33 +79,50 @@ public class EventListAdapter extends BaseAdapter {
         }
         final RegisteredEvents event = (RegisteredEvents) getItem(position);
         tag.tvName.setText(event.name);
+
         if (event.paid)
             tag.tvName.setTextColor(Color.parseColor("#00897b"));
         else
             tag.tvName.setTextColor(Color.BLACK);
-        if (userId == event.registeredStudent) {
-            tag.bConf.setVisibility(View.VISIBLE);
-            if (event.paid) {
-                tag.bConf.setText("Refund");
-            } else
-                tag.bConf.setText("Pay");
-            tag.bConf.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("paying", event.id + "");
-                    pay(event, position);
-                }
-            });
-        } else {
+
+        if (context instanceof EventVolunteer) {
             tag.bConf.setVisibility(View.INVISIBLE);
+            tag.tvName.setVisibility(View.VISIBLE);
+            if (event.paid) {
+                tag.tvStatus.setText("Paid");
+                tag.tvStatus.setTextColor(Color.parseColor("#00897b"));
+            } else {
+                tag.tvStatus.setText("Not Paid");
+                tag.tvStatus.setTextColor(Color.BLACK);
+            }
+        } else {
+            tag.tvStatus.setVisibility(View.GONE);
+            if (userId == event.registeredStudent) {
+                tag.bConf.setVisibility(View.VISIBLE);
+                if (event.paid) {
+                    tag.bConf.setText("Refund");
+                } else
+                    tag.bConf.setText("Pay");
+                tag.bConf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("paying", event.id + "");
+                        pay(event, position);
+                    }
+                });
+            } else {
+                tag.bConf.setVisibility(View.INVISIBLE);
+            }
         }
+
         convertView.setTag(tag);
         return convertView;
     }
 
     private void pay(final RegisteredEvents event, final int position) {
         if (NetworkUtil.isNetworkAvailable(context)) {
-            ((EventListListener) context).showLoading();
+            if (context instanceof EventListListener)
+                ((EventListListener) context).showLoading();
             AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
                 @Override
                 public void tokenObtained(String token) {
@@ -110,7 +131,8 @@ public class EventListAdapter extends BaseAdapter {
                     call.enqueue(new Callback<PaymentModel>() {
                         @Override
                         public void onResponse(Call<PaymentModel> call, Response<PaymentModel> response) {
-                            ((EventListListener) context).hideLoading();
+                            if (context instanceof EventListListener)
+                                ((EventListListener) context).hideLoading();
                             if (response.code() == 200) {
                                 Toast.makeText(context, "Payment Updated", Toast.LENGTH_SHORT).show();
                                 PaymentModel result = response.body();
@@ -125,7 +147,8 @@ public class EventListAdapter extends BaseAdapter {
                         @Override
                         public void onFailure(Call<PaymentModel> call, Throwable t) {
                             Log.d("ERROR", t.toString());
-                            ((EventListListener) context).hideLoading();
+                            if (context instanceof EventListListener)
+                                ((EventListListener) context).hideLoading();
                             Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -137,17 +160,19 @@ public class EventListAdapter extends BaseAdapter {
     }
 
     static class Tag {
-        TextView tvName;
+        TextView tvName, tvStatus;
         Button bConf;
 
         Tag(View v) {
             tvName = (TextView) v.findViewById(R.id.tv_name_conf);
+            tvStatus = (TextView) v.findViewById(R.id.pay_status);
             bConf = (Button) v.findViewById(R.id.button_conf);
         }
     }
 
     public interface EventListListener {
         void showLoading();
+
         void hideLoading();
     }
 

@@ -15,6 +15,7 @@ import com.cse.amrith.drishti17volunteers.Utils.NetworkUtil;
 import com.cse.amrith.drishti17volunteers.Utils.RestApiInterface;
 import com.cse.amrith.drishti17volunteers.adapters.EventListAdapter;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,14 +26,15 @@ public class EventVolunteer extends AppCompatActivity {
     Button qr;
     TextView name;
     ListView events;
-    String uid="";
+    String uid = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_volunteer);
         events = (ListView) findViewById(R.id.eventList);
         name = (TextView) findViewById(R.id.tv_name_event);
-        if (getIntent().getStringExtra("UID")!=null) {
+        if (getIntent().getStringExtra("UID") != null) {
             uid = getIntent().getStringExtra("UID");
             if (uid != "") {
                 if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
@@ -46,12 +48,18 @@ public class EventVolunteer extends AppCompatActivity {
                                 public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
                                     if (response.code() == 200) {
                                         List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
-                                        EventListAdapter adapter = new EventListAdapter(registeredEvents, getApplicationContext(), Long.valueOf(uid));
+                                        EventListAdapter adapter = new EventListAdapter(registeredEvents, EventVolunteer.this, Long.valueOf(uid));
                                         events.setAdapter(adapter);
                                     } else {
+                                        try {
+                                            Log.i("fail",response.errorBody().string());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                         Toast.makeText(getApplicationContext(), "Unsuccessful Request", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
                                     Log.d("ERROR", t.toString());

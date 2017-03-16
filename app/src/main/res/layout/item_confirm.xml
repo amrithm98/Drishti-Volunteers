@@ -28,7 +28,16 @@
             android:layout_alignParentRight="true"
             android:background="#37474f"
             android:text="Pay"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/pay_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Paid" />
 
     </RelativeLayout>
 

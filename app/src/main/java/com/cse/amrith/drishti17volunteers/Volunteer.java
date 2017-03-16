@@ -101,7 +101,7 @@ public class Volunteer extends AppCompatActivity {
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(Volunteer.this).create();
                     alertDialog.setTitle("Unauthorized");
-                    alertDialog.setMessage("You are not an admin");
+                    alertDialog.setMessage("You are not an event coordinator admin");
                     alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,
                             "OK", new DialogInterface.OnClickListener() {
                                 @Override
