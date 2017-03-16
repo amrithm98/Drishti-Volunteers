@@ -32,34 +32,36 @@ import retrofit2.Response;
 public class EventCoordinator extends AppCompatActivity {
     ExpandableListView lv;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_coordinator);
-        lv=(ExpandableListView)findViewById(R.id.eventCoordinatorList);
-        final HashMap<String,Integer> searchList=new HashMap<>();
-        final AutoCompleteTextView event=(AutoCompleteTextView)findViewById(R.id.event);
+        lv = (ExpandableListView) findViewById(R.id.eventCoordinatorList);
+        final HashMap<String, Integer> searchList = new HashMap<>();
+        final AutoCompleteTextView event = (AutoCompleteTextView) findViewById(R.id.event);
         event.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 getStudentList(searchList.get(event.getText().toString()));
             }
         });
-        progressDialog=new ProgressDialog(EventCoordinator.this);
+        progressDialog = new ProgressDialog(EventCoordinator.this);
+        progressDialog.setMessage("Loading");
         if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-            RestApiInterface service=ApiClient.getService();
+            RestApiInterface service = ApiClient.getService();
             progressDialog.show();
             service.getEvents().enqueue(new Callback<List<EventModel>>() {
                 @Override
                 public void onResponse(Call<List<EventModel>> call, Response<List<EventModel>> response) {
                     progressDialog.dismiss();
-                    List<EventModel> events=response.body();
-                    ArrayList<String> eventList=new ArrayList<String>();
-                    for(EventModel e:events) {
+                    List<EventModel> events = response.body();
+                    ArrayList<String> eventList = new ArrayList<String>();
+                    for (EventModel e : events) {
                         eventList.add(e.name);
-                        searchList.put(e.name,e.server_id);
+                        searchList.put(e.name, e.server_id);
                     }
-                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(EventCoordinator.this,android.R.layout.simple_list_item_1,eventList);
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EventCoordinator.this, android.R.layout.simple_list_item_1, eventList);
                     event.setAdapter(arrayAdapter);
                     event.setThreshold(0);
                 }
@@ -73,25 +75,28 @@ public class EventCoordinator extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
         }
     }
-    private void getStudentList(final int eventId){
+
+    private void getStudentList(final int eventId) {
         progressDialog.show();
         AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
             @Override
             public void tokenObtained(String token) {
                 RestApiInterface service = ApiClient.getService();
-                Call<EventAdmin> call = service.getStudentList(token,eventId);
+                Call<EventAdmin> call = service.getStudentList(token, eventId);
                 call.enqueue(new Callback<EventAdmin>() {
                     @Override
                     public void onResponse(Call<EventAdmin> call, Response<EventAdmin> response) {
                         progressDialog.dismiss();
                         if (response.code() == 200) {
-                            EventAdmin EventAdmin= (EventAdmin)response.body();
+                            EventAdmin EventAdmin = (EventAdmin) response.body();
                             Log.i("got events", new Gson().toJson(EventAdmin));
-                            lv.setAdapter(new StudentListExpandableAdapter(EventCoordinator.this, (ArrayList<EventAdminStudentModel>) EventAdmin.students));
+                            lv.setAdapter(new StudentListExpandableAdapter(EventCoordinator.this, EventCoordinator.this,
+                                    (ArrayList<EventAdminStudentModel>) EventAdmin.students));
                         } else {
                             Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                     @Override
                     public void onFailure(Call<EventAdmin> call, Throwable t) {
                         progressDialog.dismiss();

@@ -1,7 +1,10 @@
 package com.cse.amrith.drishti17volunteers.Utils.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.widget.TextView;
 
 /**
@@ -14,6 +17,12 @@ public class Util {
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), typefaceName);
         textview.setTypeface(typeface);
 
+    }
+
+    public static void callIntent(Activity activity, String phoneNo) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNo));
+        activity.startActivity(intent);
     }
 
 }

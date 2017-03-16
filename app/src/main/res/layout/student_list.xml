@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        />
-    <TextView
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+   >
+
+    <ImageView
         android:id="@+id/contact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        />
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_phone_black_24dp" />
+
+    <com.cse.amrith.drishti17volunteers.Utils.ui.ProximaTextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/contact"
+        android:paddingBottom="10dp"
+        android:text="Nirmal Kumar"
+        android:padding="10dp"
+        android:layout_marginLeft="-10dp"
+        android:textSize="18sp"
+        android:paddingTop="10dp" />
+    <!--   <TextView
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp"
+           android:id="@+id/contact"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           />-->
 </RelativeLayout>
