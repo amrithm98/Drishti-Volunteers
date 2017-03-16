@@ -12,14 +12,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Volunteer" />
+        <activity
+            android:name=".Volunteer"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Registration"
-            android:label="@string/confirm_payment" />
+            android:label="@string/confirm_payment"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EventVolunteer"
-            android:label="@string/event_list" />
-        <activity android:name=".Login">
+            android:label="@string/event_list"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,10 +39,17 @@
 
         <activity
             android:name=".Utils.QR"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Score" />
-        <activity android:name=".EventCoordinator" />
-        <activity android:name=".ChooseEvent"></activity>
+        <activity
+            android:name=".Score"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EventCoordinator"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChooseEvent"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
