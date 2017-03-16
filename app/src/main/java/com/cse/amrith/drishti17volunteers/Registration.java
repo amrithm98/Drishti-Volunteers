@@ -56,32 +56,27 @@ public class Registration extends AppCompatActivity implements EventListAdapter.
                     //name.setText(Global.student.name);
                     if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
                         progressDialog.show();
-                        AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+                        RestApiInterface service = ApiClient.getService();
+                        Call<List<RegisteredEvents>> call = service.eventStatus(uid);
+                        call.enqueue(new Callback<List<RegisteredEvents>>() {
                             @Override
-                            public void tokenObtained(String token) {
-                                RestApiInterface service = ApiClient.getService();
-                                Call<List<RegisteredEvents>> call = service.eventStatus(token, uid);
-                                call.enqueue(new Callback<List<RegisteredEvents>>() {
-                                    @Override
-                                    public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
-                                        progressDialog.dismiss();
-                                        if (response.code() == 200) {
-                                            List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
-                                            Log.i("got events", new Gson().toJson(registeredEvents));
-                                            EventListAdapter adapter = new EventListAdapter(registeredEvents, Registration.this, Long.valueOf(uid));
-                                            events.setAdapter(adapter);
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
+                            public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
+                                progressDialog.dismiss();
+                                if (response.code() == 200) {
+                                    List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
+                                    Log.i("got events", new Gson().toJson(registeredEvents));
+                                    EventListAdapter adapter = new EventListAdapter(registeredEvents, Registration.this, Long.valueOf(uid));
+                                    events.setAdapter(adapter);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                                    @Override
-                                    public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
-                                        progressDialog.dismiss();
-                                        Log.d("ERROR", t.toString());
-                                        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                            @Override
+                            public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
+                                progressDialog.dismiss();
+                                Log.d("ERROR", t.toString());
+                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {

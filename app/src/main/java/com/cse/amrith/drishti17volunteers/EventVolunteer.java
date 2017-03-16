@@ -1,5 +1,6 @@
 package com.cse.amrith.drishti17volunteers;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,39 +39,39 @@ public class EventVolunteer extends AppCompatActivity {
             uid = getIntent().getStringExtra("UID");
             if (uid != "") {
                 if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
-                    AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+                    RestApiInterface service = ApiClient.getService();
+                    Call<List<RegisteredEvents>> call = service.eventStatus(uid);
+                    final ProgressDialog dialog = new ProgressDialog(EventVolunteer.this);
+                    dialog.setCancelable(false);
+                    dialog.setMessage("Loading List");
+                    dialog.show();
+                    call.enqueue(new Callback<List<RegisteredEvents>>() {
                         @Override
-                        public void tokenObtained(String token) {
-                            RestApiInterface service = ApiClient.getService();
-                            Call<List<RegisteredEvents>> call = service.eventStatus(token, uid);
-                            call.enqueue(new Callback<List<RegisteredEvents>>() {
-                                @Override
-                                public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
-                                    if (response.code() == 200) {
-                                        List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
-                                        EventListAdapter adapter = new EventListAdapter(registeredEvents, EventVolunteer.this, Long.valueOf(uid));
-                                        events.setAdapter(adapter);
-                                    } else {
-                                        try {
-                                            Log.i("fail",response.errorBody().string());
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Toast.makeText(getApplicationContext(), "Unsuccessful Request", Toast.LENGTH_SHORT).show();
-                                    }
+                        public void onResponse(Call<List<RegisteredEvents>> call, Response<List<RegisteredEvents>> response) {
+                            dialog.dismiss();
+                            if (response.code() == 200) {
+                                List<RegisteredEvents> registeredEvents = (List<RegisteredEvents>) response.body();
+                                EventListAdapter adapter = new EventListAdapter(registeredEvents, EventVolunteer.this, Long.valueOf(uid));
+                                events.setAdapter(adapter);
+                            } else {
+                                try {
+                                    Log.i("fail", response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
+                                Toast.makeText(getApplicationContext(), "Unsuccessful Request", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-                                @Override
-                                public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
-                                    Log.d("ERROR", t.toString());
-                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                        @Override
+                        public void onFailure(Call<List<RegisteredEvents>> call, Throwable t) {
+                            Log.d("ERROR", t.toString());
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
-
+                    Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT).show();
                 }
             }
         }
