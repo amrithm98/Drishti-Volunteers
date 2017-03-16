@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -129,10 +130,61 @@ public class QR extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else if (s.equalsIgnoreCase("update") && count == 0) {
-                                    Intent intent = new Intent(QR.this, Score.class);
-                                    intent.putExtra("UID", uid);
-                                    startActivity(intent);
-                                    finish();
+                                    LayoutInflater inflater = LayoutInflater.from(QR.this);
+                                    final View alertView = inflater.inflate(R.layout.update_score_dialogue, null);
+                                    new AlertDialog.Builder(QR.this).setView(alertView)
+                                            .setTitle("Update Score")
+                                            .setIcon(R.drawable.drishti_logo0)
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    final EditText score=(EditText)alertView.findViewById(R.id.score);
+                                                    final EditText reason=(EditText)alertView.findViewById(R.id.reason);
+                                                    if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+                                                        AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+                                                            @Override
+                                                            public void tokenObtained(String token) {
+                                                                if(score.getText()!=null && reason.getText()!=null)
+                                                                {
+                                                                    RestApiInterface service = ApiClient.getService();
+                                                                    int addScore=Integer.parseInt(score.getText().toString());
+                                                                    String scoreReason=reason.getText().toString();
+                                                                    Call<String> call = service.addScore(token,uid,addScore,scoreReason);
+                                                                    call.enqueue(new Callback<String>() {
+                                                                        @Override
+                                                                        public void onResponse(Call<String> call, Response<String> response) {
+                                                                            if (response.code() == 200) {
+                                                                                Toast.makeText(getApplicationContext(), "Score Updated", Toast.LENGTH_SHORT).show();
+                                                                                String s = response.body();
+                                                                                Log.d("Score",s);
+                                                                            } else {
+                                                                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        }
+                                                                        @Override
+                                                                        public void onFailure(Call<String> call, Throwable t) {
+                                                                            Log.d("ERROR", t.toString());
+                                                                            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
+                                                    }
+                                                }
+                                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    }).show();
+//                                    Intent intent = new Intent(QR.this, Score.class);
+//                                    intent.putExtra("UID", uid);
+//                                    startActivity(intent);
+//                                    finish();
                                 }
                             }
                             Thread.currentThread().isInterrupted();
@@ -162,7 +214,7 @@ public class QR extends AppCompatActivity {
                                 Student student = response.body();
                                 if (getIntent().getStringExtra("Volunteer") != null) {
                                     String s = getIntent().getStringExtra("Volunteer");
-                                    String uid = student.id;
+                                    final String uid = student.id;
                                     if (s.equalsIgnoreCase("reg")) {
                                         Log.d("Intnt", getIntent().getStringExtra("Volunteer"));
                                         Intent intent = new Intent(QR.this, Registration.class);
@@ -175,10 +227,57 @@ public class QR extends AppCompatActivity {
                                         startActivity(intent);
                                         finish();
                                     } else if (s.equalsIgnoreCase("update")) {
-                                        Intent intent = new Intent(QR.this, Score.class);
-                                        intent.putExtra("UID", uid);
-                                        startActivity(intent);
-                                        finish();
+                                        LayoutInflater inflater = LayoutInflater.from(QR.this);
+                                        final View alertView = inflater.inflate(R.layout.update_score_dialogue, null);
+                                        new AlertDialog.Builder(QR.this).setView(alertView)
+                                                .setTitle("Update Score")
+                                                .setIcon(R.drawable.drishti_logo0)
+                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        final EditText score=(EditText)alertView.findViewById(R.id.score);
+                                                        final EditText reason=(EditText)alertView.findViewById(R.id.reason);
+                                                        if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+                                                            AuthUtil.getFirebaseToken(new AuthUtil.Listener() {
+                                                                @Override
+                                                                public void tokenObtained(String token) {
+                                                                    if(score.getText()!=null && reason.getText()!=null)
+                                                                    {
+                                                                        RestApiInterface service = ApiClient.getService();
+                                                                        int addScore=Integer.parseInt(score.getText().toString());
+                                                                        String scoreReason=reason.getText().toString();
+                                                                        Call<String> call = service.addScore(token,uid,addScore,scoreReason);
+                                                                        call.enqueue(new Callback<String>() {
+                                                                            @Override
+                                                                            public void onResponse(Call<String> call, Response<String> response) {
+                                                                                if (response.code() == 200) {
+                                                                                    Toast.makeText(getApplicationContext(), "Score Updated", Toast.LENGTH_SHORT).show();
+                                                                                    String s = response.body();
+                                                                                    Log.d("Score",s);
+                                                                                } else {
+                                                                                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                            @Override
+                                                                            public void onFailure(Call<String> call, Throwable t) {
+                                                                                Log.d("ERROR", t.toString());
+                                                                                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                                    }
+
+                                                                }
+                                                            });
+                                                        } else {
+                                                            Toast.makeText(getApplicationContext(), "Network Unavailable", Toast.LENGTH_SHORT);
+                                                        }
+                                                    }
+                                                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        }).show();
                                     }
                                 }
                             } else {
